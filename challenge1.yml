@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Udacity - This template deploys a VPC
+Resources:
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: My first ever security group launched with Cloudformation
+      VpcId: vpc-0092d1022a893fd74
+      SecurityGroupEgress:
+      - IpProtocol: -1
+        FromPort: -1
+        ToPort: -1
+        CidrIp: 0.0.0.0/0
+      SecurityGroupIngress:
+      - FromPort: 80
+        ToPort: 80
+        IpProtocol: tcp
+        CidrIp: 0.0.0.0/0
+  MyServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      ImageId: "ami-0022f774911c1d690"
+      NetworkInterfaces:
+      - AssociatePublicIpAddress: "true"
+        SubnetId: subnet-02b6fb74c86391560
+        DeviceIndex: "0"
+        GroupSet:
+        - Ref: "MySecurityGroup"
+      UserData: 
+      - Fn::Base64: !Sub |
+         #!/bin/bash
+         sudo yum update -y
+         sudo yum install -y httpd
+         sudo systemctl start httpd
+         sudo systemctl enable httpd
+      
