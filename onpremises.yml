@@ -102,3 +102,41 @@ Resources:
         Properties:
             RouteTableId: !Ref RouteTable2
             SubnetId: !Ref PrivateSubnet2
+
+Outputs: 
+
+    VPC: 
+        Description: A reference to the created on premises VPC
+        Value: !Ref VPC
+        Export:
+          Name: !Sub ${EnvironmentName}-VPCID
+
+    VPCRouteTable:
+        Description: Private Routing AZ1
+        Value: !Ref RouteTable
+        Export:
+          Name: !Sub ${EnvironmentName}-PRI-RT
+
+    VPCRouteTable2:
+        Description: Private Routing AZ2
+        Value: !Ref RouteTable2
+        Export:
+          Name: !Sub ${EnvironmentName}-PRI2-RT
+
+    PrivateSubnets:
+        Description: The list of private subnets
+        Value: !Join [ ",", [ !Ref PrivateSubnet1, !Ref PrivateSubnet2 ]]
+        Export:
+          Name: !Sub ${EnvironmentName}-PRIV-NETS
+
+    PrivateSubnet1:
+        Description: A reference to the private subnet in the 1st Availability Zone
+        Value: !Ref PrivateSubnet1
+        Export:
+          Name: !Sub ${EnvironmentName}-PRI1-SN
+
+    PrivateSubnet2: 
+        Description: A reference to the private subnet in the 2nd Availability Zone
+        Value: !Ref PrivateSubnet2
+        Export:
+          Name: !Sub ${EnvironmentName}-PRI2-SN
