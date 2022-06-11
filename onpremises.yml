@@ -59,3 +59,46 @@ Resources:
             Tags: 
                 - Key: Name 
                   Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
+
+    RouteTable:
+        Type: AWS::EC2::RouteTable
+        Properties: 
+            VpcId: !Ref VPC
+            Tags: 
+                - Key: Name 
+                  Value: !Sub ${EnvironmentName} Private Routes (AZ1)
+
+    DefaultRoute: 
+        Type: AWS::EC2::Route
+        Properties: 
+            RouteTableId: !Ref RouteTable
+            DestinationCidrBlock: 0.0.0.0/0
+            GatewayId: !Ref VpnGateway
+
+    Subnet1RouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref RouteTable
+            SubnetId: !Ref PrivateSubnet1
+    
+
+    RouteTable2:
+        Type: AWS::EC2::RouteTable
+        Properties: 
+            VpcId: !Ref VPC
+            Tags: 
+                - Key: Name 
+                  Value: !Sub ${EnvironmentName} Private Routes (AZ2)
+
+    DefaultRoute2: 
+        Type: AWS::EC2::Route
+        Properties: 
+            RouteTableId: !Ref RouteTable2
+            DestinationCidrBlock: 0.0.0.0/0
+            GatewayId: !Ref VpnGateway
+
+    Subnet2RouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref RouteTable2
+            SubnetId: !Ref PrivateSubnet2
