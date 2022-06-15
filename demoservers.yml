@@ -59,7 +59,7 @@ Resources:
       # ToDo: AMI ID of Ubuntu Linux machine. Too get one, try creating a VM from the web console. 
       ImageId: ami-0747bdcabd34c712a
       # ToDo: Change the key-pair name, as applicable to you. 
-      KeyName: nd9990_keypair
+      KeyName: WeFlex
       SecurityGroups:
       - Ref: WebServerSecGroup
       InstanceType: t3.medium
@@ -75,7 +75,5 @@ Resources:
           !Sub "${EnvironmentName}-PRIV-NETS"
       LaunchConfigurationName:
         Ref: WebAppLaunchConfig
-      MinSize: '3'
+      MinSize: '1'
       MaxSize: '5'
-      TargetGroupARNs:
-      - Ref: WebAppTargetGroup
