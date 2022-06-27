@@ -1,0 +1,61 @@
+Description: >
+    Gureje Kolade / Udacity Challenge 3
+
+Parameters:
+
+  EnvironmentName:
+      Description: An environment name that will be prefixed to resource names
+      Type: String
+
+Resources:
+  RoleForSSMAccess:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+               - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+  MyServerInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+      - !Ref RoleForSSMAccess
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: My security group set for challenge 2
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${EnvironmentName}-VPCID"
+      SecurityGroupEgress:
+      - FromPort: 0
+        ToPort: 65535
+        IpProtocol: tcp
+        CidrIp: 0.0.0.0/0
+      SecurityGroupIngress:
+      - FromPort: 80
+        ToPort: 80
+        IpProtocol: tcp
+        CidrIp: 0.0.0.0/0
+  MyServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      ImageId: "ami-0cff7528ff583bf9a"
+      IamInstanceProfile: !Ref MyServerInstanceProfile
+      NetworkInterfaces:
+      - AssociatePublicIpAddress: "true"
+        SubnetId: 
+            Fn::ImportValue:
+              !Sub "${EnvironmentName}-PRI-SN"
+        DeviceIndex: "0"
+        GroupSet:
+        - Ref: MySecurityGroup
+      

@@ -117,3 +117,36 @@ Resources:
         Properties:
             RouteTableId: !Ref PrivateRouteTable
             SubnetId: !Ref PrivateSubnet
+
+Outputs: 
+
+    VPC: 
+        Description: A reference to the created VPC
+        Value: !Ref VPC
+        Export:
+          Name: !Sub ${EnvironmentName}-VPCID
+
+    VPCPublicRouteTable:
+        Description: Public Routing
+        Value: !Ref PublicRouteTable
+        Export:
+          Name: !Sub ${EnvironmentName}-PUB-RT
+
+    VPCPrivateRouteTable:
+        Description: Private Routing AZ1
+        Value: !Ref PrivateRouteTable
+        Export:
+          Name: !Sub ${EnvironmentName}-PRI-RT
+
+
+    PublicSubnet: 
+        Description: A reference to the public subnet
+        Value: !Ref PublicSubnet
+        Export:
+          Name: !Sub ${EnvironmentName}-PUB-SN
+
+    PrivateSubnet:
+        Description: A reference to the private subnet
+        Value: !Ref PrivateSubnet
+        Export:
+          Name: !Sub ${EnvironmentName}-PRI-SN
