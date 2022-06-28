@@ -32,10 +32,10 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
-          name: "return 1"
-          command: |
-             echo 1
+      - persist_to_workspace:
+          root: ~/
+          paths:
+           - output.txt
 
       - run:
           name: "Failed Tests"
